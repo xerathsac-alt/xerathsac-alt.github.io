@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>AxionX Text Formatter</title>
+
+    <style>
+        :root {
+            --bg: #0b0f17;
+            --panel: #111827;
+            --card: #0f172a;
+            --border: rgba(255, 255, 255, .08);
+            --text: #e5e7eb;
+            --muted: #94a3b8;
+            --accent: #ed3a3a;
+            --shadow: 0 18px 50px rgba(0, 0, 0, .45);
+            --radius: 18px;
+            --mono: ui-monospace, Menlo, Consolas, monospace;
+            --sans: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--sans);
+            background:
+                radial-gradient(900px 500px at 10% 0%, rgba(237, 58, 58, .25), transparent 60%),
+                radial-gradient(700px 420px at 90% 20%, rgba(248, 56, 56, .18), transparent 55%),
+                var(--bg);
+            color: var(--text);
+        }
+
+        header {
+            max-width: 1200px;
+            margin: auto;
+            padding: 28px 18px 6px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 20px
+        }
+
+        header p {
+            margin: 8px 0 0;
+            font-size: 13px;
+            color: var(--muted)
+        }
+
+        .wrap {
+            max-width: 1200px;
+            margin: auto;
+            padding: 16px 18px 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .panel {
+            background: linear-gradient(180deg, rgba(255, 255, 255, .03), transparent 45%), var(--panel);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .top {
+            padding: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .badge {
+            font-size: 12px;
+            color: var(--muted)
+        }
+
+        .content {
+            padding: 14px
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .field {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 12px;
+        }
+
+        label {
+            font-size: 12px;
+            color: var(--muted);
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        textarea,
+        input,
+        select {
+            width: 100%;
+            background: rgba(255, 255, 255, .04);
+            border: 1px solid rgba(255, 255, 255, .1);
+            color: var(--text);
+            border-radius: 12px;
+            padding: 10px;
+            font-size: 12px;
+        }
+
+        textarea {
+            min-height: 260px;
+            resize: vertical;
+            font-family: var(--mono);
+        }
+
+        textarea:focus,
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: rgba(237, 58, 58, .5);
+            box-shadow: 0 0 0 4px rgba(237, 58, 58, .15);
+        }
+
+        select {
+            appearance: none;
+            background:
+                linear-gradient(135deg, rgba(237, 58, 58, .15), transparent),
+                rgba(255, 255, 255, .04);
+        }
+
+        .btnrow {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        button {
+            border: 1px solid rgba(255, 255, 255, .1);
+            background: rgba(255, 255, 255, .04);
+            color: var(--text);
+            padding: 9px 12px;
+            font-size: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        button.primary {
+            background: linear-gradient(135deg, #ed3a3a, #b91010);
+            border-color: #ed3a3a;
+        }
+
+        button:hover {
+            filter: brightness(1.1)
+        }
+
+        select {
+            background: #111827;
+            color: #e5e7eb;
+            border: 1px solid rgba(255, 255, 255, .1);
+            border-radius: 12px;
+            padding: 10px 12px;
+            font-size: 12px;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
+
+        select option {
+            background-color: #0f172a;
+            color: #bdbdbd;
+        }
+
+        select option:checked {
+            background-color: #0f172a;
+            color: #ffffff;
+        }
+
+        .stats {
+            margin-top: 10px;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        /* Formatting Options polish */
+        .optionGroup {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .optionTitle {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .optionHint {
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .toolButtons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 8px;
+        }
+
+        select {
+            background: #111827;
+            color: #e5e7eb;
+            border: 1px solid rgba(255, 255, 255, .1);
+            border-radius: 12px;
+            padding: 10px 12px;
+            font-size: 12px;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
+
+        select option {
+            background-color: #0f172a;
+            color: #bdbdbd;
+        }
+
+        select option:checked {
+            background-color: #0f172a;
+            color: #ffffff;
+        }
+
+        @media(max-width:900px) {
+            .grid {
+                grid-template-columns: 1fr
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>AxionX Text Formatter</h1>
+        <p>Advanced text formatting with live preview</p>
+    </header>
+
+    <div class="wrap">
+
+        <!-- FORMATTING OPTIONS -->
+        <section class="panel">
+            <div class="top">
+                <div class="badge">Formatting Options</div>
+            </div>
+            <div class="content">
+                <div class="grid">
+
+                    <div class="field optionGroup">
+                        <div class="optionTitle">Text Style</div>
+                        <div class="optionHint">Choose how the text casing and structure should be transformed.</div>
+                        <select id="style">
+                            <option value="">— Select Style —</option>
+                            <option value="upper">UPPERCASE</option>
+                            <option value="lower">lowercase</option>
+                            <option value="sentence">Sentence case</option>
+                            <option value="title">Title Case</option>
+                            <option value="camel">camelCase</option>
+                            <option value="pascal">PascalCase</option>
+                            <option value="snake">snake_case</option>
+                            <option value="kebab">kebab-case</option>
+                        </select>
+                    </div>
+
+                    <div class="field optionGroup">
+                        <div class="optionTitle">Quick Tools</div>
+                        <div class="optionHint">One-click utilities for cleaning and restructuring text.</div>
+                        <div class="toolButtons">
+                            <button id="trim">Trim</button>
+                            <button id="normalize">Normalize Spaces</button>
+                            <button id="clean">Remove Empty Lines</button>
+                            <button id="dedupe">Remove Duplicates</button>
+                            <button id="sort">Sort A–Z</button>
+                            <button id="reverse">Reverse Lines</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- PREVIEW -->
+        <section class="panel">
+            <div class="top">
+                <div class="badge">Preview</div>
+            </div>
+            <div class="content">
+                <div class="grid">
+                    <div class="field">
+                        <label>Original</label>
+                        <textarea id="input"></textarea>
+                    </div>
+                    <div class="field">
+                        <label>Formatted</label>
+                        <textarea id="output" readonly></textarea>
+                    </div>
+                </div>
+
+                <div class="btnrow">
+                    <button id="copy">Copy</button>
+                    <button id="download">Download</button>
+                    <button id="reset">Reset</button>
+                </div>
+
+                <div class="stats" id="stats">—</div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        const $ = id => document.getElementById(id);
+        const input = $("input"), output = $("output"), style = $("style");
+        let base = "";
+
+        function updateStats(t) {
+            $("stats").textContent =
+                `Chars: ${t.length} | Words: ${t.trim() ? t.trim().split(/\s+/).length : 0} | Lines: ${t.split("\n").length}`;
+        }
+
+        function set(t) {
+            output.value = t;
+            updateStats(t);
+        }
+
+        input.oninput = () => { base = input.value; set(base); };
+
+        style.onchange = () => {
+            let t = output.value;
+            switch (style.value) {
+                case "upper": t = t.toUpperCase(); break;
+                case "lower": t = t.toLowerCase(); break;
+                case "sentence": t = t.toLowerCase().replace(/(^\s*\w|[.!?]\s*\w)/g, c => c.toUpperCase()); break;
+                case "title": t = t.toLowerCase().replace(/\b\w/g, c => c.toUpperCase()); break;
+                case "camel": t = t.toLowerCase().split(/\W+/).map((w, i) => i ? w[0].toUpperCase() + w.slice(1) : w).join(""); break;
+                case "pascal": t = t.toLowerCase().split(/\W+/).map(w => w[0].toUpperCase() + w.slice(1)).join(""); break;
+                case "snake": t = t.toLowerCase().split(/\W+/).join("_"); break;
+                case "kebab": t = t.toLowerCase().split(/\W+/).join("-"); break;
+            }
+            set(t);
+        };
+
+        $("trim").onclick = () => set(output.value.trim());
+        $("normalize").onclick = () => set(output.value.replace(/\s+/g, " ").trim());
+        $("clean").onclick = () => set(output.value.split("\n").filter(l => l.trim()).join("\n"));
+        $("dedupe").onclick = () => set([...new Set(output.value.split("\n"))].join("\n"));
+        $("sort").onclick = () => set(output.value.split("\n").sort().join("\n"));
+        $("reverse").onclick = () => set(output.value.split("\n").reverse().join("\n"));
+
+        $("copy").onclick = () => navigator.clipboard.writeText(output.value);
+
+        $("download").onclick = () => {
+            const b = new Blob([output.value], { type: "text/plain" });
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(b);
+            a.download = "formatted_text.txt";
+            a.click();
+        };
+
+        $("reset").onclick = () => { style.value = ""; set(base); };
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>AxionX Gradient Generator</title>
+
+    <style>
+        :root {
+            --bg: #0b0f17;
+            --panel: #111827;
+            --card: #0f172a;
+            --border: rgba(255, 255, 255, .08);
+            --text: #e5e7eb;
+            --muted: #94a3b8;
+            --accent: #ed3a3a;
+            --shadow: 0 18px 50px rgba(0, 0, 0, .45);
+            --radius: 18px;
+            --mono: ui-monospace, Menlo, Consolas, monospace;
+            --sans: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--sans);
+            background:
+                radial-gradient(900px 500px at 10% 0%, rgba(237, 58, 58, .25), transparent 60%),
+                radial-gradient(700px 420px at 90% 20%, rgba(248, 56, 56, .18), transparent 55%),
+                var(--bg);
+            color: var(--text);
+        }
+
+        header {
+            max-width: 1200px;
+            margin: auto;
+            padding: 28px 18px 6px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 20px
+        }
+
+        header p {
+            margin: 8px 0 0;
+            font-size: 13px;
+            color: var(--muted)
+        }
+
+        .wrap {
+            max-width: 1200px;
+            margin: auto;
+            padding: 16px 18px 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .panel {
+            background: linear-gradient(180deg, rgba(255, 255, 255, .03), transparent 45%), var(--panel);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .top {
+            padding: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .badge {
+            font-size: 12px;
+            color: var(--muted)
+        }
+
+        .content {
+            padding: 14px
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .field {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 10px;
+        }
+
+        label {
+            font-size: 12px;
+            color: var(--muted);
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            background: rgba(255, 255, 255, .04);
+            border: 1px solid rgba(255, 255, 255, .1);
+            color: var(--text);
+            border-radius: 12px;
+            padding: 10px;
+            font-size: 12px;
+        }
+
+        input[type=color] {
+            height: 44px;
+            padding: 0
+        }
+
+        input[type=range] {
+            padding: 0
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: rgba(237, 58, 58, .5);
+            box-shadow: 0 0 0 4px rgba(237, 58, 58, .15);
+        }
+
+        .preview {
+            height: 220px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 90px;
+            resize: none;
+            background: rgba(255, 255, 255, .04);
+            border: 1px solid rgba(255, 255, 255, .1);
+            color: var(--text);
+            border-radius: 12px;
+            padding: 10px;
+            font-size: 11px;
+            font-family: var(--mono);
+        }
+
+        .btnrow {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        button {
+            border: 1px solid rgba(255, 255, 255, .1);
+            background: rgba(255, 255, 255, .04);
+            color: var(--text);
+            padding: 8px 12px;
+            font-size: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        button.primary {
+            background: linear-gradient(135deg, #ed3a3a, #b91010);
+            border-color: #ed3a3a;
+        }
+
+        button:hover {
+            filter: brightness(1.1)
+        }
+
+        select {
+            background: #111827;
+            color: #e5e7eb;
+            border: 1px solid rgba(255, 255, 255, .1);
+            border-radius: 12px;
+            padding: 10px 12px;
+            font-size: 12px;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
+
+        select option {
+            background-color: #0f172a;
+            color: #bdbdbd;
+        }
+
+        select option:checked {
+            background-color: #0f172a;
+            color: #ffffff;
+        }
+
+        @media(max-width:900px) {
+            .grid {
+                grid-template-columns: 1fr
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>AxionX Gradient Generator</h1>
+        <p>Create modern CSS gradients with precision</p>
+    </header>
+
+    <div class="wrap">
+
+        <section class="panel">
+            <div class="top">
+                <div class="badge">Gradient Settings</div>
+            </div>
+            <div class="content">
+
+                <div class="grid">
+
+                    <div class="field">
+                        <label>Gradient Type</label>
+                        <select id="type">
+                            <option value="linear">Linear</option>
+                            <option value="radial">Radial</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label>Angle (Linear)</label>
+                        <input type="number" id="angle" value="135">
+                    </div>
+
+                    <div class="field">
+                        <label>Color 1</label>
+                        <input type="color" id="c1" value="#ed3a3a">
+                    </div>
+
+                    <div class="field">
+                        <label>Color 2</label>
+                        <input type="color" id="c2" value="#7c3aed">
+                    </div>
+
+                    <div class="field">
+                        <label>Alpha 1</label>
+                        <input type="range" id="a1" min="0" max="1" step="0.01" value="1">
+                    </div>
+
+                    <div class="field">
+                        <label>Alpha 2</label>
+                        <input type="range" id="a2" min="0" max="1" step="0.01" value="1">
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="top">
+                <div class="badge">Preview & CSS</div>
+            </div>
+            <div class="content">
+
+                <div id="preview" class="preview"></div>
+
+                <div class="field" style="margin-top:14px">
+                    <label>CSS Output</label>
+                    <textarea id="css" readonly></textarea>
+                    <div class="btnrow">
+                        <button onclick="copy()">Copy CSS</button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        const $ = id => document.getElementById(id);
+
+        function rgba(hex, a) {
+            const n = parseInt(hex.slice(1), 16);
+            return `rgba(${n >> 16 & 255},${n >> 8 & 255},${n & 255},${a})`;
+        }
+
+        function update() {
+            const type = $("type").value;
+            const angle = $("angle").value;
+            const g =
+                type === "linear"
+                    ? `linear-gradient(${angle}deg, ${rgba(c1.value, a1.value)}, ${rgba(c2.value, a2.value)})`
+                    : `radial-gradient(circle, ${rgba(c1.value, a1.value)}, ${rgba(c2.value, a2.value)})`;
+
+            preview.style.background = g;
+            css.value = `background: ${g};`;
+        }
+
+        function copy() {
+            navigator.clipboard.writeText(css.value);
+        }
+
+        ["type", "angle", "c1", "c2", "a1", "a2"].forEach(id => {
+            $(id).addEventListener("input", update);
+        });
+
+        update();
+    </script>
+
+</body>
+
+</html>

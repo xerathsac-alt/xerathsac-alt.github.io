@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>AxionX UUID Generator</title>
+
+    <style>
+        :root {
+            --bg: #0b0f17;
+            --panel: #111827;
+            --card: #0f172a;
+            --border: rgba(255, 255, 255, .08);
+            --text: #e5e7eb;
+            --muted: #94a3b8;
+            --accent: #ed3a3a;
+            --shadow: 0 18px 50px rgba(0, 0, 0, .45);
+            --radius: 18px;
+            --mono: ui-monospace, Menlo, Consolas, monospace;
+            --sans: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--sans);
+            background:
+                radial-gradient(900px 500px at 10% 0%, rgba(237, 58, 58, .25), transparent 60%),
+                radial-gradient(700px 420px at 90% 20%, rgba(248, 56, 56, .18), transparent 55%),
+                radial-gradient(700px 500px at 50% 120%, rgba(185, 16, 16, .12), transparent 60%),
+                var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        header {
+            max-width: 1200px;
+            margin: auto;
+            padding: 28px 18px 6px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 20px;
+            letter-spacing: .2px;
+            font-weight: 700
+        }
+
+        header p {
+            margin: 8px 0 0;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.4
+        }
+
+        .wrap {
+            max-width: 1200px;
+            margin: auto;
+            padding: 16px 18px 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .panel {
+            background: linear-gradient(180deg, rgba(255, 255, 255, .03), transparent 45%), var(--panel);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .top {
+            padding: 14px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .badge {
+            font-size: 12px;
+            color: var(--muted)
+        }
+
+        .content {
+            padding: 14px
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .field {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 12px;
+        }
+
+        label {
+            font-size: 12px;
+            color: var(--muted);
+            display: block;
+            margin: 0 0 6px;
+        }
+
+        input[type="number"],
+        input[type="text"],
+        select,
+        textarea {
+            width: 100%;
+            background: rgba(255, 255, 255, .04);
+            border: 1px solid rgba(255, 255, 255, .1);
+            color: var(--text);
+            border-radius: 12px;
+            padding: 10px;
+            font-size: 12px;
+            outline: none;
+        }
+
+        textarea {
+            min-height: 260px;
+            resize: vertical;
+            font-family: var(--mono);
+            line-height: 1.4;
+        }
+
+        textarea:focus,
+        input:focus,
+        select:focus {
+            border-color: rgba(237, 58, 58, .5);
+            box-shadow: 0 0 0 4px rgba(237, 58, 58, .15);
+        }
+
+        .mini {
+            margin-top: 8px;
+            font-size: 11px;
+            color: var(--muted);
+            line-height: 1.35;
+        }
+
+        .btnrow {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            appearance: none;
+            border: 1px solid rgba(255, 255, 255, .10);
+            background: rgba(255, 255, 255, .04);
+            color: var(--text);
+            padding: 9px 12px;
+            font-size: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform .05s ease, background .15s ease, border-color .15s ease, filter .15s ease;
+            user-select: none;
+        }
+
+        button:hover {
+            background: rgba(255, 255, 255, .07);
+            border-color: rgba(255, 255, 255, .16);
+            filter: brightness(1.05)
+        }
+
+        button:active {
+            transform: translateY(1px)
+        }
+
+        button.primary {
+            background: linear-gradient(135deg, #ed3a3a, #b91010);
+            border-color: #ed3a3a;
+        }
+
+        button.warn {
+            border-color: #fbbf24;
+            color: #fbbf24;
+        }
+
+        .notice {
+            margin-top: 10px;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .ok {
+            color: #4ade80
+        }
+
+        .err {
+            color: #f87171
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 10px;
+            border: 1px solid rgba(255, 255, 255, .10);
+            background: rgba(255, 255, 255, .03);
+            border-radius: 999px;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        select {
+            background: #111827;
+            color: #e5e7eb;
+            border: 1px solid rgba(255, 255, 255, .1);
+            border-radius: 12px;
+            padding: 10px 12px;
+            font-size: 12px;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
+
+        select option {
+            background-color: #0f172a;
+            color: #bdbdbd;
+        }
+
+        select option:checked {
+            background-color: #0f172a;
+            color: #ffffff;
+        }
+
+        @media(max-width:900px) {
+            .grid {
+                grid-template-columns: 1fr
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>AxionX UUID Generator</h1>
+        <p>Generate UUIDs (v4 + v1-ish), bulk output, validate, and export.</p>
+    </header>
+
+    <div class="wrap">
+
+        <section class="panel">
+            <div class="top">
+                <div class="badge">Generator Settings</div>
+                <div class="btnrow">
+                    <button id="generate">Generate</button>
+                    <button id="copy">Copy</button>
+                    <button id="download">Download</button>
+                    <button id="clear">Clear</button>
+                </div>
+            </div>
+
+            <div class="content">
+                <div class="grid">
+                    <div class="field">
+                        <label>UUID Version</label>
+                        <select id="version">
+                            <option value="v4" selected>UUID v4 (Random)</option>
+                            <option value="v1">UUID v1 (Time-based, best-effort)</option>
+                        </select>
+                        <div class="mini">v4 is standard. v1 here is browser-safe (not true MAC-based).</div>
+                    </div>
+
+                    <div class="field">
+                        <label>How Many</label>
+                        <input id="count" type="number" min="1" max="5000" step="1" value="10" />
+                        <div class="mini">Up to 5000 per batch.</div>
+                    </div>
+
+                    <div class="field">
+                        <label>Format</label>
+                        <select id="format">
+                            <option value="lower" selected>Lowercase</option>
+                            <option value="upper">UPPERCASE</option>
+                            <option value="braced">Braced {uuid}</option>
+                            <option value="urn">URN (urn:uuid:...)</option>
+                            <option value="compact">Compact (no hyphens)</option>
+                        </select>
+                        <div class="mini">Applies after generation.</div>
+                    </div>
+
+                    <div class="field">
+                        <label>Delimiter</label>
+                        <select id="delimiter">
+                            <option value="\n" selected>New line</option>
+                            <option value=",">Comma</option>
+                            <option value=", ">Comma + space</option>
+                            <option value=" ">Space</option>
+                            <option value="|">Pipe</option>
+                        </select>
+                        <div class="mini">Used for bulk output.</div>
+                    </div>
+
+                    <div class="field" style="grid-column:1/-1">
+                        <label>Quick Tools</label>
+                        <div class="btnrow">
+                            <button id="validate">Validate Output</button>
+                            <button id="dedupe">Remove Duplicates</button>
+                            <button id="shuffle">Shuffle</button>
+                            <button id="sort">Sort A–Z</button>
+                        </div>
+                        <div class="mini">Useful for lists pasted into the output box.</div>
+                    </div>
+
+                </div>
+
+                <div class="notice" id="status">—</div>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="top">
+                <div class="badge">Output</div>
+                <div class="pill" id="stats">Chars: 0 | Items: 0</div>
+            </div>
+            <div class="content">
+                <div class="grid">
+                    <div class="field" style="grid-column:1/-1">
+                        <label>Generated UUIDs</label>
+                        <textarea id="out" spellcheck="false"
+                            placeholder="Click Generate to create UUIDs..."></textarea>
+                        <div class="mini">Tip: You can paste your own UUID list here and use the quick tools above.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        const $ = (id) => document.getElementById(id);
+
+        const out = $("out");
+        const statusEl = $("status");
+        const statsEl = $("stats");
+
+        function setStatus(msg, kind = "muted") {
+            statusEl.className = "notice " + (kind === "ok" ? "ok" : kind === "err" ? "err" : "");
+            statusEl.textContent = msg;
+        }
+
+        function clamp(n, a, b) { return Math.max(a, Math.min(b, n)); }
+
+        function updateStats() {
+            const t = out.value || "";
+            const items = t.trim() ? t.split(/\s*[\n,|]\s*|\s{2,}/).filter(Boolean).length : 0;
+            statsEl.textContent = `Chars: ${t.length} | Items: ${items}`;
+        }
+
+        function bytesToHex(bytes) {
+            return Array.from(bytes).map(b => b.toString(16).padStart(2, "0")).join("");
+        }
+
+        function formatUuid(uuid, fmt) {
+            let u = uuid;
+            if (fmt === "upper") u = u.toUpperCase();
+            else u = u.toLowerCase();
+
+            if (fmt === "compact") return u.replace(/-/g, "");
+            if (fmt === "braced") return "{" + u + "}";
+            if (fmt === "urn") return "urn:uuid:" + u;
+            return u;
+        }
+
+        function joiner() {
+            const v = $("delimiter").value;
+            return v === "\\n" ? "\n" : v;
+        }
+
+        function uuidV4() {
+            if (crypto && crypto.randomUUID) return crypto.randomUUID();
+
+            const rnd = new Uint8Array(16);
+            crypto.getRandomValues(rnd);
+
+            rnd[6] = (rnd[6] & 0x0f) | 0x40; 
+            rnd[8] = (rnd[8] & 0x3f) | 0x80;
+
+            const h = bytesToHex(rnd);
+            return `${h.slice(0, 8)}-${h.slice(8, 12)}-${h.slice(12, 16)}-${h.slice(16, 20)}-${h.slice(20)}`;
+        }
+
+        let _lastTime = 0;
+        let _clockSeq = (crypto.getRandomValues(new Uint16Array(1))[0]) & 0x3fff;
+        const _node = crypto.getRandomValues(new Uint8Array(6)); 
+
+        function uuidV1() {
+            const UUID_EPOCH = 12219292800000;
+            let now = Date.now();
+
+            if (now <= _lastTime) {
+                _clockSeq = (_clockSeq + 1) & 0x3fff;
+                now = _lastTime + 1;
+            }
+            _lastTime = now;
+
+            const t = BigInt(now + UUID_EPOCH) * 10000n;
+
+            const timeLow = Number(t & 0xffffffffn) >>> 0;
+            const timeMid = Number((t >> 32n) & 0xffffn) >>> 0;
+            const timeHi = Number((t >> 48n) & 0x0fffn) >>> 0;
+
+            const timeHiAndVersion = timeHi | 0x1000;
+            const clockSeqHi = ((_clockSeq >> 8) & 0x3f) | 0x80;
+            const clockSeqLow = _clockSeq & 0xff;
+
+            const nodeHex = bytesToHex(_node);
+
+            const tl = timeLow.toString(16).padStart(8, "0");
+            const tm = timeMid.toString(16).padStart(4, "0");
+            const th = timeHiAndVersion.toString(16).padStart(4, "0");
+            const cs = clockSeqHi.toString(16).padStart(2, "0") + clockSeqLow.toString(16).padStart(2, "0");
+
+            return `${tl}-${tm}-${th}-${cs}-${nodeHex}`;
+        }
+
+        function gen() {
+            try {
+                const ver = $("version").value;
+                const count = clamp(parseInt($("count").value || "1", 10), 1, 5000);
+                const fmt = $("format").value;
+                const delim = joiner();
+
+                const list = [];
+                for (let i = 0; i < count; i++) {
+                    const raw = ver === "v1" ? uuidV1() : uuidV4();
+                    list.push(formatUuid(raw, fmt));
+                }
+
+                out.value = list.join(delim);
+                updateStats();
+                setStatus(`Generated ${count} UUID ${ver.toUpperCase()} value(s).`, "ok");
+            } catch (e) {
+                console.error(e);
+                setStatus("Generation failed. Your browser may not support secure crypto APIs.", "err");
+            }
+        }
+
+        function extractList(text) {
+            return (text || "")
+                .split(/[\n,|]+/)
+                .map(s => s.trim())
+                .filter(Boolean);
+        }
+
+        function isValidUuid(u) {
+            const s = u.trim();
+
+            const raw = s.startsWith("urn:uuid:") ? s.slice(9)
+                : (s.startsWith("{") && s.endsWith("}")) ? s.slice(1, -1)
+                    : s;
+
+            const compact = raw.replace(/-/g, "");
+            if (/^[0-9a-fA-F]{32}$/.test(compact)) {
+                if (raw.includes("-")) {
+                    return /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/.test(raw);
+                }
+                return true;
+            }
+            return false;
+        }
+
+        function applyList(list) {
+            const delim = joiner();
+            out.value = list.join(delim);
+            updateStats();
+        }
+
+        $("generate").addEventListener("click", gen);
+
+        $("copy").addEventListener("click", async () => {
+            try {
+                await navigator.clipboard.writeText(out.value || "");
+                setStatus("Copied output to clipboard.", "ok");
+            } catch {
+                setStatus("Clipboard blocked by browser permissions.", "err");
+            }
+        });
+
+        $("download").addEventListener("click", () => {
+            const t = out.value || "";
+            const blob = new Blob([t], { type: "text/plain" });
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "uuids.txt";
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        });
+
+        $("clear").addEventListener("click", () => {
+            out.value = "";
+            updateStats();
+            setStatus("Cleared output.", "ok");
+        });
+
+        $("validate").addEventListener("click", () => {
+            const list = extractList(out.value);
+            if (!list.length) {
+                setStatus("Nothing to validate.", "err");
+                return;
+            }
+            const bad = list.filter(x => !isValidUuid(x));
+            if (bad.length) {
+                setStatus(`Validation failed: ${bad.length} invalid item(s). (Example: "${bad[0]}")`, "err");
+            } else {
+                setStatus(`All good: ${list.length} valid UUID(s).`, "ok");
+            }
+        });
+
+        $("dedupe").addEventListener("click", () => {
+            const list = extractList(out.value);
+            const before = list.length;
+            const unique = [...new Set(list)];
+            applyList(unique);
+            setStatus(`Removed duplicates: ${before - unique.length} removed.`, "ok");
+        });
+
+        $("shuffle").addEventListener("click", () => {
+            const list = extractList(out.value);
+            for (let i = list.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [list[i], list[j]] = [list[j], list[i]];
+            }
+            applyList(list);
+            setStatus("Shuffled list.", "ok");
+        });
+
+        $("sort").addEventListener("click", () => {
+            const list = extractList(out.value).sort((a, b) => a.localeCompare(b));
+            applyList(list);
+            setStatus("Sorted A–Z.", "ok");
+        });
+
+        out.addEventListener("input", updateStats);
+
+        updateStats();
+        setStatus("Ready. Choose settings and click Generate.", "muted");
+    </script>
+
+</body>
+
+</html>

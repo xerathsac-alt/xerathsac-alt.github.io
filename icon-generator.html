@@ -1,0 +1,810 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>AxionX Icon Generator</title>
+    <style>
+        :root {
+            --bg: #0b0f17;
+            --panel: #111827;
+            --card: #0f172a;
+            --border: rgba(255, 255, 255, .08);
+            --text: #e5e7eb;
+            --muted: #94a3b8;
+            --accent: #ed3a3a;
+            --shadow: 0 18px 50px rgba(0, 0, 0, .45);
+            --radius: 18px;
+            --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--sans);
+            background:
+                radial-gradient(900px 500px at 10% 0%, rgba(237, 58, 58, 0.25), transparent 60%),
+                radial-gradient(700px 420px at 90% 20%, rgba(248, 56, 56, 0.18), transparent 55%),
+                radial-gradient(700px 500px at 50% 120%, rgba(185, 16, 16, 0.12), transparent 60%),
+                var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        header {
+            padding: 28px 18px 6px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 20px;
+            letter-spacing: .2px;
+            font-weight: 700;
+        }
+
+        header p {
+            margin: 8px 0 0;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 16px 18px 26px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .panel {
+            background: linear-gradient(180deg, rgba(255, 255, 255, .03), transparent 45%), var(--panel);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .panel .top {
+            padding: 14px 14px 10px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .badge {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .btnrow {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap
+        }
+
+        button {
+            appearance: none;
+            border: 1px solid rgba(255, 255, 255, .10);
+            background: rgba(255, 255, 255, .04);
+            color: var(--text);
+            padding: 9px 10px;
+            font-size: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform .05s ease, background .15s ease, border-color .15s ease;
+            user-select: none;
+        }
+
+        button:hover {
+            background: rgba(255, 255, 255, .07);
+            border-color: rgba(255, 255, 255, .16);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        .content {
+            padding: 14px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .field {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 10px;
+        }
+
+        .field label {
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin: 0 0 8px;
+        }
+
+        .row {
+            display: flex;
+            gap: 10px;
+            align-items: center
+        }
+
+        input[type="number"],
+        select,
+        input[type="text"] {
+            width: 100%;
+            background: rgba(255, 255, 255, .04);
+            border: 1px solid rgba(255, 255, 255, .10);
+            color: var(--text);
+            border-radius: 12px;
+            padding: 10px 10px;
+            font-size: 12px;
+            outline: none;
+        }
+
+        input[type="number"]:focus,
+        select:focus,
+        input[type="text"]:focus,
+        textarea:focus {
+            border-color: rgba(124, 58, 237, .45);
+            box-shadow: 0 0 0 4px rgba(124, 58, 237, .15);
+        }
+
+        input[type="color"] {
+            width: 44px;
+            height: 38px;
+            border: none;
+            background: transparent;
+            padding: 0;
+            cursor: pointer;
+        }
+
+        .mini {
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 8px;
+            line-height: 1.35;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 180px;
+            resize: vertical;
+            background: rgba(255, 255, 255, .04);
+            border: 1px solid rgba(255, 255, 255, .10);
+            color: var(--text);
+            border-radius: 12px;
+            padding: 10px;
+            font-size: 11px;
+            font-family: var(--mono);
+            outline: none;
+            line-height: 1.4;
+        }
+
+        .previewPanel {
+            background: linear-gradient(180deg, rgba(255, 255, 255, .03), transparent 45%), var(--panel);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            display: grid;
+            grid-template-rows: auto 1fr;
+        }
+
+        .previewTop {
+            padding: 14px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .previewTop .title {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .previewTop .title strong {
+            font-size: 13px;
+        }
+
+        .previewTop .title span {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .stage {
+            padding: 16px;
+            display: grid;
+            place-items: center;
+            min-height: 520px;
+            background:
+                linear-gradient(90deg, rgba(255, 255, 255, .03) 1px, transparent 1px) 0 0/26px 26px,
+                linear-gradient(rgba(255, 255, 255, .03) 1px, transparent 1px) 0 0/26px 26px,
+                radial-gradient(520px 380px at 50% 15%, rgba(237, 58, 58, 0.14), transparent 60%),
+                radial-gradient(520px 380px at 50% 90%, rgba(248, 56, 56, 0.1), transparent 60%),
+                #0a0f18;
+        }
+
+        .stage .note {
+            margin-top: 12px;
+            font-size: 12px;
+            color: var(--muted);
+            text-align: center;
+        }
+
+        .renderBox {
+            display: grid;
+            gap: 12px;
+            justify-items: center;
+        }
+
+        .canvasWrap {
+            width: 360px;
+            max-width: 100%;
+            display: grid;
+            place-items: center;
+        }
+
+        canvas {
+            width: 320px;
+            height: 320px;
+            max-width: 100%;
+            border-radius: 18px;
+            box-shadow: 0 18px 60px rgba(0, 0, 0, .55);
+            image-rendering: auto;
+            background: transparent;
+        }
+
+        .warn {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #fbbf24;
+            display: none;
+        }
+
+        @media (max-width: 980px) {
+            .wrap {
+                grid-template-columns: 1fr;
+            }
+
+            .stage {
+                min-height: 480px;
+            }
+
+            canvas {
+                width: 280px;
+                height: 280px;
+            }
+
+            select {
+                background: #111827;
+                color: #e5e7eb;
+                border: 1px solid rgba(255, 255, 255, .1);
+                border-radius: 12px;
+                padding: 10px 12px;
+                font-size: 12px;
+                appearance: none;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+            }
+
+            select option {
+                background-color: #0f172a;
+                color: #bdbdbd;
+            }
+
+            select option:checked {
+                background-color: #0f172a;
+                color: #ffffff;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>AxionX Icon Generator</h1>
+        <p>Paste any SVG, recolor it, add background + border, and export PNG/SVG.</p>
+    </header>
+
+    <div class="wrap">
+        <section class="panel">
+            <div class="top">
+                <div class="badge">Controls</div>
+                <div class="btnrow">
+                    <button id="reset">Reset</button>
+                </div>
+            </div>
+
+            <div class="content">
+                <div class="grid">
+                    <div class="field">
+                        <label>Size</label>
+                        <div class="row">
+                            <input id="size" type="number" min="64" max="2048" step="16" value="512" />
+                            <span style="color:var(--muted);font-size:12px;">px</span>
+                        </div>
+                        <div class="mini">This is the export canvas size (PNG and SVG).</div>
+                    </div>
+
+                    <div class="field">
+                        <label>Padding (icon inset)</label>
+                        <div class="row">
+                            <input id="padding" type="number" min="0" max="240" step="2" value="96" />
+                            <span style="color:var(--muted);font-size:12px;">px</span>
+                        </div>
+                        <div class="mini">Higher padding makes the icon smaller inside the tile.</div>
+                    </div>
+
+                    <div class="field">
+                        <label>Icon Color</label>
+                        <div class="row">
+                            <input id="iconColor" type="color" value="#ffffff" />
+                            <input id="iconColorText" type="text" value="#ffffff" />
+                        </div>
+                        <div class="mini">Applies by forcing SVG fills/strokes to this value.</div>
+                    </div>
+
+                    <div class="field">
+                        <label>Background Mode</label>
+                        <select id="bgMode">
+                            <option value="solid">Solid</option>
+                            <option value="semi">Semi-transparent</option>
+                            <option value="transparent">Transparent</option>
+                        </select>
+                        <div class="mini">Semi uses your background color with adjustable opacity.</div>
+                    </div>
+
+                    <div class="field">
+                        <label>Background Color</label>
+                        <div class="row">
+                            <input id="bgColor" type="color" value="#7c3aed" />
+                            <input id="bgColorText" type="text" value="#7c3aed" />
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label>Background Opacity (semi)</label>
+                        <div class="row">
+                            <input id="bgOpacity" type="number" min="0" max="1" step="0.05" value="0.25" />
+                        </div>
+                        <div class="mini">Only used when Background Mode = Semi-transparent.</div>
+                    </div>
+
+                    <div class="field">
+                        <label>Border Width</label>
+                        <div class="row">
+                            <input id="borderWidth" type="number" min="0" max="64" step="1" value="10" />
+                            <span style="color:var(--muted);font-size:12px;">px</span>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label>Border Radius</label>
+                        <div class="row">
+                            <input id="borderRadius" type="number" min="0" max="256" step="2" value="96" />
+                            <span style="color:var(--muted);font-size:12px;">px</span>
+                        </div>
+                        <div class="mini">Try 0 for square, ~96 for rounded, or half of size for circle.</div>
+                    </div>
+
+                    <div class="field" style="grid-column: 1 / -1;">
+                        <label>Border Color</label>
+                        <div class="row">
+                            <input id="borderColor" type="color" value="#ffffff" />
+                            <input id="borderColorText" type="text" value="#ffffff" />
+                        </div>
+                    </div>
+
+                    <div class="field" style="grid-column: 1 / -1;">
+                        <label>SVG Icon (paste raw SVG)</label>
+                        <textarea id="svgInput" spellcheck="false"></textarea>
+                        <div class="mini">
+                            Tip: The SVG should have a valid <code>viewBox</code>. If it doesn’t, it can still work, but
+                            scaling may be off.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="previewPanel">
+            <div class="previewTop">
+                <div class="title">
+                    <strong>Preview</strong>
+                    <span>Live render updates as you change settings.</span>
+                </div>
+            </div>
+
+            <div class="stage">
+                <div class="renderBox">
+                    <div class="canvasWrap">
+                        <canvas id="canvas" width="512" height="512"></canvas>
+                        <div class="warn" id="warn"></div>
+                    </div>
+                    <div class="note">
+                        Transparent backgrounds will show the grid behind the icon.
+                    </div>
+                </div>
+            </div>
+            <div class="field" style="grid-column: 1 / -1;">
+                <label>Export</label>
+                <div class="btnrow">
+                    <button id="downloadPng">Download PNG</button>
+                    <button id="downloadSvg">Download SVG</button>
+                    <button id="copySvgOut">Copy Export SVG</button>
+                </div>
+                <div class="mini">PNG is rendered from the canvas. SVG export rebuilds a clean icon tile.</div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const el = (id) => document.getElementById(id);
+
+        const canvas = el("canvas");
+        const ctx = canvas.getContext("2d");
+
+        const sizeEl = el("size");
+        const paddingEl = el("padding");
+
+        const iconColorEl = el("iconColor");
+        const iconColorTextEl = el("iconColorText");
+
+        const bgModeEl = el("bgMode");
+        const bgColorEl = el("bgColor");
+        const bgColorTextEl = el("bgColorText");
+        const bgOpacityEl = el("bgOpacity");
+
+        const borderWidthEl = el("borderWidth");
+        const borderRadiusEl = el("borderRadius");
+        const borderColorEl = el("borderColor");
+        const borderColorTextEl = el("borderColorText");
+
+        const svgInputEl = el("svgInput");
+        const warnEl = el("warn");
+
+        function clamp(n, a, b) { return Math.max(a, Math.min(b, n)); }
+
+        function hexToRgba(hex, alpha) {
+            const h = hex.replace("#", "").trim();
+            const full = h.length === 3 ? h.split("").map(c => c + c).join("") : h;
+            const r = parseInt(full.slice(0, 2), 16);
+            const g = parseInt(full.slice(2, 4), 16);
+            const b = parseInt(full.slice(4, 6), 16);
+            return `rgba(${r},${g},${b},${alpha})`;
+        }
+
+        function syncColorInputs(picker, text) {
+            const v = text.value.trim();
+            if (/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(v)) picker.value = v;
+        }
+
+        function forceSvgColor(svgString, color) {
+            let s = svgString;
+
+            if (!/xmlns=/.test(s)) {
+                s = s.replace("<svg", '<svg xmlns="http://www.w3.org/2000/svg"');
+            }
+
+            const tags = ["path", "circle", "rect", "polygon", "polyline", "ellipse", "line", "g"];
+            for (const tag of tags) {
+                const re = new RegExp(`<${tag}([^>]*)>`, "gi");
+                s = s.replace(re, (m, attrs) => {
+                    let newAttrs = attrs;
+
+                    if (/fill\s*=\s*["']none["']/i.test(newAttrs)) {
+                    } else {
+                        if (/fill\s*=\s*["'][^"']*["']/i.test(newAttrs)) {
+                            newAttrs = newAttrs.replace(/fill\s*=\s*["'][^"']*["']/i, `fill="${color}"`);
+                        } else {
+                            newAttrs += ` fill="${color}"`;
+                        }
+                    }
+
+                    if (/stroke\s*=\s*["']none["']/i.test(newAttrs)) {
+                    } else {
+                        if (/stroke\s*=\s*["'][^"']*["']/i.test(newAttrs)) {
+                            newAttrs = newAttrs.replace(/stroke\s*=\s*["'][^"']*["']/i, `stroke="${color}"`);
+                        } else {
+                            const isLineLike = /<(line|polyline|polygon)/i.test(m);
+                            const hasStrokeWidth = /stroke-width\s*=\s*["'][^"']*["']/i.test(newAttrs);
+                            if (isLineLike || hasStrokeWidth) newAttrs += ` stroke="${color}"`;
+                        }
+                    }
+
+                    return `<${tag}${newAttrs}>`;
+                });
+            }
+
+            return s;
+        }
+
+        function roundedRectPath(ctx, x, y, w, h, r) {
+            const rr = clamp(r, 0, Math.min(w, h) / 2);
+            ctx.beginPath();
+            ctx.moveTo(x + rr, y);
+            ctx.arcTo(x + w, y, x + w, y + h, rr);
+            ctx.arcTo(x + w, y + h, x, y + h, rr);
+            ctx.arcTo(x, y + h, x, y, rr);
+            ctx.arcTo(x, y, x + w, y, rr);
+            ctx.closePath();
+        }
+
+        function setWarning(msg) {
+            if (!msg) {
+                warnEl.style.display = "none";
+                warnEl.textContent = "";
+            } else {
+                warnEl.style.display = "block";
+                warnEl.textContent = msg;
+            }
+        }
+
+        async function svgToImage(svgString) {
+            const blob = new Blob([svgString], { type: "image/svg+xml;charset=utf-8" });
+            const url = URL.createObjectURL(blob);
+
+            const img = new Image();
+            img.decoding = "async";
+            img.crossOrigin = "anonymous";
+            await new Promise((resolve, reject) => {
+                img.onload = resolve;
+                img.onerror = reject;
+                img.src = url;
+            });
+
+            URL.revokeObjectURL(url);
+            return img;
+        }
+
+        async function render() {
+            try {
+                const size = clamp(parseInt(sizeEl.value || "512", 10), 64, 4096);
+                const padding = clamp(parseInt(paddingEl.value || "96", 10), 0, Math.floor(size / 2));
+                const bw = clamp(parseInt(borderWidthEl.value || "0", 10), 0, 256);
+                const br = clamp(parseInt(borderRadiusEl.value || "0", 10), 0, 2048);
+
+                const iconColor = iconColorEl.value;
+                const bgMode = bgModeEl.value;
+                const bgColor = bgColorEl.value;
+                const bgOpacity = clamp(parseFloat(bgOpacityEl.value || "0.25"), 0, 1);
+
+                const borderColor = borderColorEl.value;
+
+                canvas.width = size;
+                canvas.height = size;
+
+                ctx.clearRect(0, 0, size, size);
+
+                if (bgMode === "solid") {
+                    ctx.save();
+                    roundedRectPath(ctx, 0, 0, size, size, br);
+                    ctx.clip();
+                    ctx.fillStyle = bgColor;
+                    ctx.fillRect(0, 0, size, size);
+                    ctx.restore();
+                } else if (bgMode === "semi") {
+                    ctx.save();
+                    roundedRectPath(ctx, 0, 0, size, size, br);
+                    ctx.clip();
+                    ctx.fillStyle = hexToRgba(bgColor, bgOpacity);
+                    ctx.fillRect(0, 0, size, size);
+                    ctx.restore();
+                }
+
+                if (bw > 0) {
+                    ctx.save();
+                    roundedRectPath(ctx, bw / 2, bw / 2, size - bw, size - bw, br);
+                    ctx.strokeStyle = borderColor;
+                    ctx.lineWidth = bw;
+                    ctx.stroke();
+                    ctx.restore();
+                }
+
+                let rawSvg = (svgInputEl.value || "").trim();
+                if (!rawSvg) {
+                    setWarning("Paste an SVG icon (or load a sample).");
+                    return;
+                }
+
+                const coloredSvg = forceSvgColor(rawSvg, iconColor);
+
+                const img = await svgToImage(coloredSvg);
+
+                const inner = size - (bw * 2);
+                const iconBox = clamp(inner - (padding * 2), 8, inner);
+                const x = (size - iconBox) / 2;
+                const y = (size - iconBox) / 2;
+
+                ctx.save();
+                roundedRectPath(ctx, 0, 0, size, size, br);
+                ctx.clip();
+
+                ctx.drawImage(img, x, y, iconBox, iconBox);
+                ctx.restore();
+
+                setWarning("");
+
+            } catch (err) {
+                console.error(err);
+                setWarning("Render error. Your SVG may be invalid or missing a proper <svg> wrapper/viewBox.");
+            }
+        }
+
+        function downloadBlob(blob, filename) {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+        }
+
+        function exportPng(scale) {
+            const s = clamp(parseInt(sizeEl.value || "512", 10), 64, 4096);
+            const out = document.createElement("canvas");
+            out.width = s * scale;
+            out.height = s * scale;
+            const octx = out.getContext("2d");
+            octx.imageSmoothingEnabled = true;
+            octx.drawImage(canvas, 0, 0, out.width, out.height);
+
+            out.toBlob((blob) => {
+                if (!blob) return;
+                downloadBlob(blob, `icon_${s}px.png`);
+            }, "image/png");
+        }
+
+        function buildExportSvg() {
+            const size = clamp(parseInt(sizeEl.value || "512", 10), 64, 4096);
+            const padding = clamp(parseInt(paddingEl.value || "96", 10), 0, Math.floor(size / 2));
+            const bw = clamp(parseInt(borderWidthEl.value || "0", 10), 0, 256);
+            const br = clamp(parseInt(borderRadiusEl.value || "0", 10), 0, 2048);
+
+            const iconColor = iconColorEl.value;
+            const bgMode = bgModeEl.value;
+            const bgColor = bgColorEl.value;
+            const bgOpacity = clamp(parseFloat(bgOpacityEl.value || "0.25"), 0, 1);
+            const borderColor = borderColorEl.value;
+
+            let rawSvg = (svgInputEl.value || "").trim();
+            if (!rawSvg) rawSvg = SAMPLE_SHIELD;
+
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(rawSvg, "image/svg+xml");
+            const svg = doc.querySelector("svg");
+            let viewBox = svg?.getAttribute("viewBox") || "0 0 24 24";
+            const parts = viewBox.split(/\s+/).map(Number);
+            const vb = { x: parts[0], y: parts[1], w: parts[2], h: parts[3] };
+
+            const iconNodes = svg ? Array.from(svg.childNodes).map(n => n.outerHTML || n.textContent).join("") : rawSvg;
+
+            const inner = size - (bw * 2);
+            const iconBox = clamp(inner - (padding * 2), 8, inner);
+            const ix = (size - iconBox) / 2;
+            const iy = (size - iconBox) / 2;
+
+            const sx = iconBox / vb.w;
+            const sy = iconBox / vb.h;
+
+            const bg =
+                (bgMode === "solid") ? `<rect x="0" y="0" width="${size}" height="${size}" rx="${br}" fill="${bgColor}"/>` :
+                    (bgMode === "semi") ? `<rect x="0" y="0" width="${size}" height="${size}" rx="${br}" fill="${bgColor}" fill-opacity="${bgOpacity}"/>` :
+                        ``;
+
+            const border = (bw > 0)
+                ? `<rect x="${bw / 2}" y="${bw / 2}" width="${size - bw}" height="${size - bw}" rx="${br}" fill="none" stroke="${borderColor}" stroke-width="${bw}"/>`
+                : ``;
+
+            const out = `
+<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+  <defs>
+    <clipPath id="clip">
+      <rect x="0" y="0" width="${size}" height="${size}" rx="${br}"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#clip)">
+    ${bg}
+    <g transform="translate(${ix},${iy}) scale(${sx},${sy}) translate(${-vb.x},${-vb.y})"
+       fill="${iconColor}" stroke="${iconColor}">
+      ${iconNodes}
+    </g>
+    ${border}
+  </g>
+</svg>`.trim();
+
+            return out;
+        }
+
+        function downloadSvg() {
+            const svg = buildExportSvg();
+            downloadBlob(new Blob([svg], { type: "image/svg+xml;charset=utf-8" }), "icon_export.svg");
+        }
+
+        async function copySvgOut() {
+            try {
+                const svg = buildExportSvg();
+                await navigator.clipboard.writeText(svg);
+                setWarning("Copied export SVG to clipboard.");
+                setTimeout(() => setWarning(""), 1400);
+            } catch {
+                setWarning("Clipboard copy blocked by browser permissions.");
+            }
+        }
+
+        function hookColorPair(picker, text) {
+            picker.addEventListener("input", () => { text.value = picker.value; render(); });
+            text.addEventListener("input", () => { syncColorInputs(picker, text); render(); });
+        }
+
+        hookColorPair(iconColorEl, iconColorTextEl);
+        hookColorPair(bgColorEl, bgColorTextEl);
+        hookColorPair(borderColorEl, borderColorTextEl);
+
+        [
+            sizeEl, paddingEl, bgModeEl, bgOpacityEl,
+            borderWidthEl, borderRadiusEl
+        ].forEach(x => x.addEventListener("input", render));
+
+        svgInputEl.addEventListener("input", () => {
+            clearTimeout(svgInputEl._t);
+            svgInputEl._t = setTimeout(render, 120);
+        });
+
+        el("reset").addEventListener("click", () => {
+            sizeEl.value = 512;
+            paddingEl.value = 96;
+
+            iconColorEl.value = "#ffffff";
+            iconColorTextEl.value = "#ffffff";
+
+            bgModeEl.value = "solid";
+            bgColorEl.value = "#7c3aed";
+            bgColorTextEl.value = "#7c3aed";
+            bgOpacityEl.value = 0.25;
+
+            borderWidthEl.value = 10;
+            borderRadiusEl.value = 96;
+            borderColorEl.value = "#ffffff";
+            borderColorTextEl.value = "#ffffff";
+
+            svgInputEl.value = "";
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            setWarning("Paste an SVG icon to generate an image.");
+        });
+
+        el("downloadPng").addEventListener("click", () => exportPng(1));
+        el("downloadPng2x").addEventListener("click", () => exportPng(2));
+        el("downloadSvg").addEventListener("click", downloadSvg);
+        el("copySvgOut").addEventListener("click", copySvgOut);
+
+        svgInputEl.value = SAMPLE_SHIELD;
+        render();
+    </script>
+</body>
+
+</html>

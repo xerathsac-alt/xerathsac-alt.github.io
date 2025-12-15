@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>AxionX Comment Remover</title>
+    <style>
+        :root {
+            --bg: #0b0f17;
+            --panel: #111827;
+            --card: #0f172a;
+            --border: rgba(255, 255, 255, .08);
+            --text: #e5e7eb;
+            --muted: #94a3b8;
+            --accent: #ed3a3a;
+            --shadow: 0 18px 50px rgba(0, 0, 0, .45);
+            --radius: 18px;
+            --mono: ui-monospace, Menlo, Consolas, monospace;
+            --sans: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--sans);
+            background:
+                radial-gradient(900px 500px at 10% 0%, rgba(237, 58, 58, .25), transparent 60%),
+                radial-gradient(700px 420px at 90% 20%, rgba(248, 56, 56, .18), transparent 55%),
+                var(--bg);
+            color: var(--text);
+        }
+
+        header {
+            max-width: 1200px;
+            margin: auto;
+            padding: 28px 18px 6px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 20px
+        }
+
+        header p {
+            margin: 8px 0 0;
+            font-size: 13px;
+            color: var(--muted)
+        }
+
+        .wrap {
+            max-width: 1200px;
+            margin: auto;
+            padding: 16px 18px 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .panel {
+            background: linear-gradient(180deg, rgba(255, 255, 255, .03), transparent 45%), var(--panel);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .top {
+            padding: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .badge {
+            font-size: 12px;
+            color: var(--muted)
+        }
+
+        .content {
+            padding: 14px
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .field {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 12px;
+        }
+
+        label {
+            font-size: 12px;
+            color: var(--muted);
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        textarea,
+        select {
+            width: 100%;
+            background: rgba(255, 255, 255, .04);
+            border: 1px solid rgba(255, 255, 255, .1);
+            color: var(--text);
+            border-radius: 12px;
+            padding: 10px;
+            font-size: 12px;
+        }
+
+        textarea {
+            min-height: 260px;
+            resize: vertical;
+            font-family: var(--mono);
+        }
+
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: rgba(237, 58, 58, .5);
+            box-shadow: 0 0 0 4px rgba(237, 58, 58, .15);
+        }
+
+        .btnrow {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        button {
+            border: 1px solid rgba(255, 255, 255, .1);
+            background: rgba(255, 255, 255, .04);
+            color: var(--text);
+            padding: 8px 12px;
+            font-size: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        button.primary {
+            background: linear-gradient(135deg, #ed3a3a, #b91010);
+            border-color: #ed3a3a;
+        }
+
+        button:hover {
+            filter: brightness(1.1)
+        }
+
+        .stats {
+            margin-top: 8px;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        select {
+            background: #111827;
+            color: #e5e7eb;
+            border: 1px solid rgba(255, 255, 255, .1);
+            border-radius: 12px;
+            padding: 10px 12px;
+            font-size: 12px;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
+
+        select option {
+            background-color: #0f172a;
+            color: #bdbdbd;
+        }
+
+        select option:checked {
+            background-color: #0f172a;
+            color: #ffffff;
+        }
+
+        @media(max-width:900px) {
+            .grid {
+                grid-template-columns: 1fr
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>AxionX Comment Remover</h1>
+        <p>Remove comments from code safely without breaking strings</p>
+    </header>
+    <div class="wrap">
+        <section class="panel">
+            <div class="top">
+                <div class="badge">Options</div>
+            </div>
+            <div class="content">
+                <div class="grid">
+                    <div class="field">
+                        <label>Language</label>
+                        <select id="lang">
+                            <option value="js">JavaScript / TypeScript / JSONC</option>
+                            <option value="html">HTML</option>
+                            <option value="css">CSS</option>
+                            <option value="py">Python</option>
+                            <option value="c">C / C++ / Java / C#</option>
+                            <option value="sql">SQL</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>Cleanup</label>
+                        <select id="cleanup">
+                            <option value="keep">Keep empty lines</option>
+                            <option value="remove">Remove empty lines</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="panel">
+            <div class="top">
+                <div class="badge">Input / Output</div>
+            </div>
+            <div class="content">
+                <div class="grid">
+                    <div class="field">
+                        <label>Original Code</label>
+                        <textarea id="input" placeholder="// Paste code here"></textarea>
+                    </div>
+                    <div class="field">
+                        <label>Without Comments</label>
+                        <textarea id="output" readonly></textarea>
+                    </div>
+                </div>
+                <div class="btnrow">
+                    <button id="process" class="primary">Remove Comments</button>
+                    <button id="copy">Copy</button>
+                    <button id="download">Download</button>
+                </div>
+                <div class="stats" id="stats">—</div>
+            </div>
+        </section>
+    </div>
+    <script>
+        const $ = id => document.getElementById(id);
+        function removeComments(code, lang) {
+            let s = code;
+            const patterns = {
+                js: [
+                    /\/\/.*$/gm,
+                    /\/\*[\s\S]*?\*\//g
+                ],
+                c: [
+                    /\/\/.*$/gm,
+                    /\/\*[\s\S]*?\*\//g
+                ],
+                css: [
+                    /\/\*[\s\S]*?\*\//g
+                ],
+                html: [
+                    //g
+                ],
+                py: [
+                    /#.*$/gm
+                ],
+                sql: [
+                    /--.*$/gm,
+                    /\/\*[\s\S]*?\*\//g
+                ]
+            };
+            for (const r of patterns[lang] || []) {
+                s = s.replace(r, "");
+            }
+            return s;
+        }
+        function update() {
+            const input = $("input").value;
+            let out = removeComments(input, $("lang").value);
+            if ($("cleanup").value === "remove") {
+                out = out.split("\n").filter(l => l.trim()).join("\n");
+            }
+            $("output").value = out;
+            $("stats").textContent =
+                `Original: ${input.length} chars | Result: ${out.length} chars | Removed: ${input.length - out.length}`;
+        }
+        $("process").onclick = update;
+        $("lang").onchange = update;
+        $("cleanup").onchange = update;
+        $("copy").onclick = () => navigator.clipboard.writeText($("output").value);
+        $("download").onclick = () => {
+            const b = new Blob([$("output").value], { type: "text/plain" });
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(b);
+            a.download = "no_comments.txt";
+            a.click();
+        };
+    </script>
+</body>
+
+</html>

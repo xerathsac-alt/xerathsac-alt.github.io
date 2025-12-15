@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AxionX Utilities</title>
+
+    <style>
+        :root {
+            --bg: #0b0f17;
+            --panel: #111827;
+            --card: #0f172a;
+            --border: rgba(255, 255, 255, .08);
+            --text: #e5e7eb;
+            --muted: #94a3b8;
+            --accent: #ed3a3a;
+            --accent-soft: rgba(237, 58, 58, 0.25);
+            --radius: 16px;
+            --shadow: 0 18px 50px rgba(0, 0, 0, .45);
+            --sans: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--sans);
+            color: var(--text);
+            background:
+                radial-gradient(800px 400px at 15% 0%, var(--accent-soft), transparent 60%),
+                radial-gradient(700px 450px at 85% 15%, rgba(248, 56, 56, 0.15), transparent 60%),
+                var(--bg);
+            min-height: 100vh;
+        }
+
+        header {
+            border-bottom: 1px solid var(--border);
+            background: rgba(0, 0, 0, .2);
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            letter-spacing: .2px;
+        }
+
+        .brand span {
+            color: var(--accent);
+        }
+
+        .nav a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 14px;
+            margin-left: 18px;
+        }
+
+        .nav a:hover {
+            color: var(--text);
+        }
+
+        .hero {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 72px 20px 48px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: clamp(32px, 5vw, 48px);
+            margin: 0;
+        }
+
+        .hero p {
+            margin: 16px auto 28px;
+            max-width: 680px;
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .hero .actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 18px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, .04);
+            color: var(--text);
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .btn.primary {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .btn:hover {
+            filter: brightness(1.05);
+        }
+
+        .section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 48px 20px;
+        }
+
+        .section-header {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 28px;
+        }
+
+        .section-header h2 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .section-header span {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .tools {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 18px;
+        }
+
+        .tool {
+            position: relative;
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, .05), transparent 40%),
+                var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 18px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition:
+                transform .18s ease,
+                box-shadow .18s ease,
+                border-color .18s ease;
+        }
+
+        .tool::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background:
+                linear-gradient(120deg,
+                    transparent 20%,
+                    rgba(237, 58, 58, 0.12),
+                    transparent 80%);
+            opacity: 0;
+            transition: opacity .25s ease;
+            pointer-events: none;
+        }
+
+        .tool:hover {
+            border-color: rgba(237, 58, 58, 0.45);
+        }
+
+        .tool:hover::before {
+            opacity: 1;
+        }
+
+        .tool h3 {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .tool p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .tool a {
+            margin-top: auto;
+            width: 100%;
+            text-align: center;
+
+            padding: 12px 0;
+            border-radius: 12px;
+
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: .3px;
+            text-transform: uppercase;
+
+            text-decoration: none;
+            color: #fff;
+
+            background: linear-gradient(135deg,
+                    rgba(237, 58, 58, 0.95),
+                    rgba(182, 33, 33, 0.95));
+
+            transition:
+                transform .15s ease,
+                box-shadow .15s ease,
+                filter .15s ease;
+        }
+
+        .tool a:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.08);
+        }
+
+        .btn {
+            position: relative;
+            padding: 12px 20px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, .14);
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, .10), rgba(255, 255, 255, .02));
+            color: var(--text);
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: .2px;
+            transition:
+                transform .15s ease,
+                box-shadow .15s ease,
+                border-color .15s ease;
+        }
+
+        .btn::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background: radial-gradient(120% 120% at 50% 0%,
+                    rgba(237, 58, 58, 0.35),
+                    transparent 60%);
+            opacity: 0;
+            transition: opacity .2s ease;
+            pointer-events: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            border-color: rgba(237, 58, 58, 0.55);
+        }
+
+        .btn:hover::after {
+            opacity: 1;
+        }
+
+        .btn.primary {
+            background:
+                linear-gradient(135deg, #ed3a3a, #b62121);
+            border-color: rgba(237, 58, 58, 0.75);
+            color: #fff;
+        }
+
+
+        footer {
+            border-top: 1px solid var(--border);
+            background: rgba(0, 0, 0, .25);
+            margin-top: 40px;
+        }
+
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 18px 20px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="nav">
+            <div class="brand">
+                AxionX Utilities
+            </div>
+            <nav>
+                <a href="#">Home</a>
+                <a href="#tools">Tools</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>Simple, Powerful Online Utilities</h1>
+        <p>
+            A growing collection of fast, privacy-friendly tools designed to help you
+            create, convert, and manage assets with ease.
+        </p>
+    </section>
+    <section id="tools" class="section">
+        <div class="section-header">
+            <h2>AxionX Available Tools</h2>
+            <span>More utilities are added regularly</span>
+        </div>
+
+        <div class="tools">
+
+            <div class="tool">
+                <h3>Icon Generator</h3>
+                <p>Create PNG icons and emojis from SVG files with full color and transparency control.</p>
+                <a href="/icon-generator.html">USE TOOL</a>
+            </div>
+
+            <div class="tool">
+                <h3>Image Converter</h3>
+                <p>Convert images between PNG, JPG, WEBP, AVIF, and more — all in your browser.</p>
+                <a href="#">USE TOOL</a>
+            </div>
+
+            <div class="tool">
+                <h3>Text Formatter</h3>
+                <p>Format, clean, and normalize text for development or content use.</p>
+                <a href="#">USE TOOL</a>
+            </div>
+
+            <div class="tool">
+                <h3>JSON Formatter</h3>
+                <p>Beautify, minify, and validate JSON instantly.</p>
+                <a href="#">USE TOOL</a>
+            </div>
+
+            <div class="tool">
+                <h3>Code Comment Remover</h3>
+                <p>Remove comments from code safely without breaking strings or logic.</p>
+                <a href="/comment-remover.html">USE TOOL</a>
+            </div>
+
+
+            <div class="tool">
+                <h3>UUID Generator</h3>
+                <p>Generate secure UUID v4 identifiers for applications.</p>
+                <a href="#">USE TOOL</a>
+            </div>
+
+            <div class="tool">
+                <h3>Color Picker & Converter</h3>
+                <p>Convert colors between HEX, RGB, HSL, and more.</p>
+                <a href="#">USE TOOL</a>
+            </div>
+
+            <div class="tool">
+                <h3>Gradient Generator</h3>
+                <p>Create CSS gradients with live previews and exportable code.</p>
+                <a href="#">USE TOOL</a>
+            </div>
+
+            <div class="tool">
+                <h3>QR Code Generator</h3>
+                <p>Generate QR codes for links, text, and contact data.</p>
+                <a href="#">USE TOOL</a>
+            </div>
+
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-inner">
+            <div>© 2025 Your Utilities</div>
+            <div>All tools run locally in your browser</div>
+        </div>
+    </footer>
+
+</body>
+
+</html>
